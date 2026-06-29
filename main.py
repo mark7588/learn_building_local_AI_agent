@@ -35,5 +35,11 @@ template = """
 prompt = ChatPromptTemplate.from_template(template)
 chain = prompt | model 
 
-result = chain.invoke({"relevant_recipes": "김치찌개, 불고기", "question": "냉장고에 돼지고기가 있는데, 이 재료로 무엇을 할 수 있을까?"})
+while True:
+    question = input("질문을 입력하세요 (종료하려면 'exit' 입력): ")
+    if question.lower() == 'exit':
+        break
+    
+recipes = retriever.invoke(question)
+result = chain.invoke({"relevant_recipes": recipes, "question": question})
 print(result)
